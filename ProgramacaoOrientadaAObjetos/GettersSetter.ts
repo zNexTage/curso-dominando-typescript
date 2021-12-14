@@ -18,11 +18,11 @@ class Permissao {
 
 const p = new Permissao('Administrador', 1);
 
-try {
-    p.nome = 'adm';
+// try {
+//     p.nome = 'adm';
 
-}
-catch (err: any) {
-    console.log(err.message);
-}
+// }
+// catch (err: any) {
+//     console.log(err.message);
+// }
 
