@@ -32,13 +32,17 @@ class CalculadoraControle {
                     case "subtracao":
                     case "divisao":
                     case "multiplicacao":
+                    case "porcentagem":
                         this.adicionarOperador(target.dataset.valor);
                         break;
                     case "ponto":
+                        this.adicionarPonto();
                         break;
                     case "limpar":
+                        this.limpar();
                         break;
                     case "desfazer":
+                        this.desfazer();
                         break;
                     case "igual":
                         this.calcular();
@@ -51,8 +55,12 @@ class CalculadoraControle {
         this.operacao.calcular();
     }
     adicionarOperacao(valor) {
+        const index = this.operacao.ultimaPosicao.indexOf(".");
+        if (index === this.operacao.ultimaPosicao.length - 1) {
+            this.operacao.ultimaPosicao = this.operacao.ultimaPosicao.replace(".", "");
+            this.tela.conteudo = this.operacao.ultimaPosicao;
+        }
         this.operacao.adicionar(valor);
-        console.log(this.operacao.length);
     }
     adicionarNumero(numero) {
         if (isNaN(Number(this.operacao.ultimaPosicao))) {
@@ -74,6 +82,18 @@ class CalculadoraControle {
             }
             this.adicionarOperacao(operador);
         }
+    }
+    adicionarPonto() {
+        this.operacao.adicionarPonto();
+        this.tela.conteudo = this.operacao.ultimaPosicao;
+    }
+    desfazer() {
+        const ultimaAcao = this.operacao.desfazer();
+        this.tela.conteudo = ultimaAcao.toString();
+    }
+    limpar() {
+        this.operacao.limpar();
+        this.tela.conteudo = '0';
     }
 }
 export default CalculadoraControle;

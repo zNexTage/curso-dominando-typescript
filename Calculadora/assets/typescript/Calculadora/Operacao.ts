@@ -17,8 +17,9 @@ class Operacao {
         if (this.operacao.length === 3) {
             this.calcular();
         }
+        
         this.operacao.push(valor);
-        console.log(this.operacao)
+        
         return this.operacao.length;
     }
 
@@ -48,14 +49,36 @@ class Operacao {
         this.onCalculado(resultado);
     }
 
-    get ultimaPosicao(): string { 
-        return this.operacao.length ? 
-        this.operacao[this.operacao.length - 1 ] : "0";
+    desfazer() {
+        this.operacao.pop();
+
+        return isNaN(Number(this.ultimaPosicao)) ? "0" : this.ultimaPosicao;
+    }
+
+    limpar(): void {
+        this.operacao = [];
+    }
+
+    adicionarPonto(): void {
+        let valorUltimaPosicao = this.ultimaPosicao;
+
+        if (isNaN(Number(valorUltimaPosicao)) || valorUltimaPosicao.includes('.')) {
+            return;
+        }
+
+        valorUltimaPosicao = `${valorUltimaPosicao}.`;
+
+        this.ultimaPosicao = valorUltimaPosicao;
+    }
+
+    get ultimaPosicao(): string {
+        return this.operacao.length ?
+            this.operacao[this.operacao.length - 1] : "0";
     }
 
     set ultimaPosicao(valor: string) {
-        const ultimoIndex = this.operacao.length ? 
-        this.operacao.length - 1 : 0;
+        const ultimoIndex = this.operacao.length ?
+            this.operacao.length - 1 : 0;
 
         this.operacao[ultimoIndex] = valor;
     }

@@ -32,24 +32,27 @@ class CalculadoraControle {
                     case "sete":
                     case "oito":
                     case "nove":
-                        this.adicionarNumero(Number(target.dataset.valor))
-
+                        this.adicionarNumero(Number(target.dataset.valor));
                         break;
 
                     case "adicao":
                     case "subtracao":
                     case "divisao":
                     case "multiplicacao":
-                        this.adicionarOperador(<string>target.dataset.valor)
+                    case "porcentagem":
+                        this.adicionarOperador(<string>target.dataset.valor);
                         break;
 
                     case "ponto":
+                        this.adicionarPonto();
                         break;
 
                     case "limpar":
+                        this.limpar();
                         break;
 
                     case "desfazer":
+                        this.desfazer();
                         break;
 
                     case "igual":
@@ -63,9 +66,16 @@ class CalculadoraControle {
         this.operacao.calcular();
     }
 
-    adicionarOperacao(valor: string): void {
+    adicionarOperacao(valor: string): void {        
+        const index = this.operacao.ultimaPosicao.indexOf(".");
+
+        if(index === this.operacao.ultimaPosicao.length - 1){
+            this.operacao.ultimaPosicao = this.operacao.ultimaPosicao.replace(".", "");
+
+            this.tela.conteudo = this.operacao.ultimaPosicao;
+        }
+
         this.operacao.adicionar(valor);
-        console.log(this.operacao.length);
     }
 
     adicionarNumero(numero: number): void {
@@ -89,12 +99,31 @@ class CalculadoraControle {
         ) {
             this.operacao.ultimaPosicao = operador;
         } else {
-            if(this.operacao.length === 0){
+            if (this.operacao.length === 0) {
                 this.adicionarOperacao("0");
             }
 
             this.adicionarOperacao(operador);
         }
+    }
+
+    adicionarPonto(): void {
+        this.operacao.adicionarPonto();
+
+        this.tela.conteudo = this.operacao.ultimaPosicao;
+    }
+
+    desfazer(): void {
+        const ultimaAcao = this.operacao.desfazer();
+
+        this.tela.conteudo = ultimaAcao.toString();
+    }
+
+
+    limpar(): void {
+        this.operacao.limpar();
+
+        this.tela.conteudo = '0';
     }
 }
 

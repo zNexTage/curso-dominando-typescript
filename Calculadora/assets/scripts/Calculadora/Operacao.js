@@ -8,7 +8,6 @@ class Operacao {
             this.calcular();
         }
         this.operacao.push(valor);
-        console.log(this.operacao);
         return this.operacao.length;
     }
     obterResultado() {
@@ -28,6 +27,21 @@ class Operacao {
         }
         this.operacao = [resultado];
         this.onCalculado(resultado);
+    }
+    desfazer() {
+        this.operacao.pop();
+        return isNaN(Number(this.ultimaPosicao)) ? "0" : this.ultimaPosicao;
+    }
+    limpar() {
+        this.operacao = [];
+    }
+    adicionarPonto() {
+        let valorUltimaPosicao = this.ultimaPosicao;
+        if (isNaN(Number(valorUltimaPosicao)) || valorUltimaPosicao.includes('.')) {
+            return;
+        }
+        valorUltimaPosicao = `${valorUltimaPosicao}.`;
+        this.ultimaPosicao = valorUltimaPosicao;
     }
     get ultimaPosicao() {
         return this.operacao.length ?
